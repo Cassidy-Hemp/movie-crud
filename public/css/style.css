@@ -38,6 +38,13 @@ form {
     justify-content: center;
     align-content: center;
 }
+
 /******************************************
 /* ADDITIONAL STYLES
 /*******************************************/
+.stars i {
+    color: rgb(98, 95, 95);
+}
+.stars i.active {
+    color: gold;
+}
