@@ -25,8 +25,8 @@ app.use(express.json())
 app.get('/', async (req,res) =>{
 
       const movieItems = await db.collection('movies').find().toArray()
-      res.render('index.ejs', { items : movieItems})
-
+      const itemsLeft = await db.collection('movies').find().toArray()
+      res.render('index.ejs', { items : movieItems, stars: req.body.stars})
   
 })
 
@@ -40,21 +40,19 @@ app.post('/addMovie', (req,res) => {
 })
 
 app.put('/rateMovie', (req, response) => {
-    db.collection('movies').insertOne({ thing: req.body.movieFromJS }, {
+    db.collection('movies').updateOne({ thing: req.body.movieFromJS }, {
         $set: {
-            stars: {1:1, 2:1, 3:1, 4:1, 5:1}, 
-            new: true
+             stars: req.body.stars 
         }
-        .then(result => {
-            console.log('Movie Rated')
-            response.json('Movie Rated')
-        })
-        .catch(error => console.error(error))
+    })
+    .then(result => {
+        console.log('Movie Rated')
+        response.json('Movie Rated')
+    })
+    .catch(error => console.error(error))
     
     })
   
-  });
-
 app.delete('/deleteMovie', (req,res) => {
     db.collection('movies').deleteOne({ thing: req.body.movieFromJS})
     .then(result => {
